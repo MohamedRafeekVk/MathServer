@@ -6,7 +6,11 @@
 
 
 ## FORMULA:
- area = length * breadth
+P = I<sup>2</sup>R
+<br> P --> Power (in watts)
+<br> I --> Intensity
+<br> R --> Resistance
+
 
 ## DESIGN STEPS:
 
@@ -35,145 +39,63 @@ math.html
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset='utf-8'>
-<meta http-equiv='X-UA-Compatible' content='IE=edge'>
-<title>Area of a Rectangle</title>
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<link rel="stylesheet" href="math.css" />
-<style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Power Of A Lamp Filament In An Incandescent Bulb</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    * {
-        padding: 0;
-        margin: 0;
-        color: #222020;
-    }
-
-
-    h1 {
-        margin-bottom: 10px;
-    }
-
-
-    .container {
-        background-color: #fbfbfb;
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: sans-serif;
-    }
-
-    .box {
-        background-color: #f1f1f1;
-        width: fit-content;
-        height: fit-content;
-        padding: 30px 50px;
-        border-radius: 18px;
-        box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;   
-        text-align: center;
-    }
-
-    .form-box {
-        margin-top: 20px;
-        height: 200px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .formelt {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .input {
-        width: 40px;
-        height: 25px;
-        text-align: center;
-        border: 1px solid #898989;
-        border-radius: 5px;
-    }
-
-    .button {
-        padding: 10px 25px;
-        margin: 0px auto;
-        border-radius: 8px;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-        color: #ffffff;
-        background-color: #fd5732;
-        transition: transform 0.3s;
-    }
-
-    .button:hover {
-        transform: translateY(-3px);
-    }
-
-    .result {
-        width: 130px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .final {
-        border: none;
-        background-color: transparent;
-        font-size: 18px;
-        font-weight: bold;
-        width: 60px;
-    }
-
-    span {
-        color: #fd5732;
-    }
-
-
-</style>
+    <style type="text/css">
+        .edge {
+            width: 1440px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 250px;
+            padding-left: 300px;
+        }
+        .box {
+            display: block;
+            border: thick dashed rgb(8, 6, 17);
+            width: 500px;
+            min-height: 300px;
+            font-size: 20px;
+            background-color: rgb(210, 210, 210);
+        }
+        .formelt {
+            color: rgb(1, 18, 17);
+            text-align: center;
+            margin-top: 7px;
+            margin-bottom: 6px;
+        }
+        h1 {
+            text-align: center;
+            padding-top: 20px;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <div class="box">
-        <h1>Area of a <span>Rectangle</span></h1>
-        <h3>Name: <span>Mohamed Rafeek</span> Ref.No: <span>24900640</span></h3>
-        <div class="form-box">
+    <div class="edge">
+        <div class="box">
+            <h1>Power Of A Lamp Filament In An Incandescent Bulb</h1>
             <form method="POST">
                 {% csrf_token %}
                 <div class="formelt">
-                    Breadth : <div><input class="input" type="text" name="length" value="{{ h }}"> m<br/></div>
+                    Intensity: <input type="text" name="intensity" value="{{ r }}"></input> (in amps)<br/>
                 </div>
                 <div class="formelt">
-                    Length : <div><input class="input" type="text" name="breadth" value="{{ r }}"> m<br/></div>
+                    Resistance: <input type="text" name="resistance" value="{{ h }}"></input> (in ohms)<br/>
                 </div>
                 <div class="formelt">
-                    <input type="submit" class="button" value="Calculate"><br/>
+                    <input type="submit" value="Calculate"></input><br/>
                 </div>
-                <div class="formelt result">
-                    Surface Area: <div><input class="input final" type="text" name="area" value="{{ area }}" readonly> m<sup>2</sup><br/></div>
+                <div class="formelt">
+                    Power: <input type="text" name="power" value="{{ power }}" readonly></input> watts<br/>
                 </div>
             </form>
         </div>
-        
     </div>
-</div>
 </body>
 </html>
+
 
 views.py
 
@@ -181,32 +103,33 @@ from django.shortcuts import render
 
 def rectarea(request):
     context = {
-        'area': "0",
+        'power': "0",
         'r': "0",
         'h': "0"
     }
     if request.method == 'POST':
         print("POST method is used")
-        r = request.POST.get('breadth', '0')
-        h = request.POST.get('length', '0')
+        r = request.POST.get('intensity', '0')
+        h = request.POST.get('resistance', '0')
         
         try:
-            breadth = float(r)
-            length = float(h)
+            intensity = float(r)
+            resistance = float(h)
             
-            # Calculate surface area of the rectangle
-            area = length * breadth
-            context['area'] = round(area, 2)
+            power = (intensity ** 2) * resistance
+
+            context['power'] = round(power, 2)
             context['r'] = r
             context['h'] = h
-            print('length=', length)
-            print('breadth=', breadth)
-            print('Surface Area=', area)
+            print('intensity =', intensity)
+            print('resistance =', resistance)
+            print('power =', power)
         except ValueError:
-            context['area'] = "Invalid input"
+            context['power'] = "Invalid input"
             print("Invalid input provided")
             
     return render(request, 'mathapp/math.html', context)
+
 
 
 urls.py
@@ -223,9 +146,11 @@ urlpatterns = [
 ```
 
 ## SERVER SIDE PROCESSING:
-![alt text](<Screenshot (21).png>)
+![Screenshot (23)](https://github.com/user-attachments/assets/d093b556-c065-4784-a1e5-2112535a1bb6)
+
 ## HOMEPAGE:
-![alt text](<Screenshot (19).png>)
+![Screenshot (22)](https://github.com/user-attachments/assets/5ec16724-4e7b-4229-a0a3-147ff0d524bf)
+
 
 ## RESULT:
 The program for performing server side processing is completed successfully.
