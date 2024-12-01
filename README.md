@@ -139,7 +139,7 @@ from django.urls import path
 from mathapp import views 
 urlpatterns = [ 
     path('admin/', admin.site.urls), 
-    path('power/',views.rectarea,name="powerofalamp"),
+    path('power/',views.power,name="powerofalamp"),
     path('',views.power,name="powerofalamp")
 ]
 
