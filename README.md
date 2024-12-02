@@ -101,7 +101,7 @@ views.py
 
 from django.shortcuts import render
 
-def rectarea(request):
+def power(request):
     context = {
         'power': "0",
         'r': "0",
